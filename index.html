@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alternance Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Alternance Tracker</h1>
+  <section id="stats">
+    <p>Total : <span id="totalCount">0</span></p>
+    <p>À postuler : <span id="toApplyCount">0</span></p>
+    <p>Envoyées : <span id="sentCount">0</span></p>
+    <p>Entretiens : <span id="interviewCount">0</span></p>
+    <p>Refus : <span id="rejectedCount">0</span></p>
+    <p>Acceptées : <span id="acceptedCount">0</span></p>
+  </section>
+
+  <form id="applicationForm">
+    <input type="text" id="company" placeholder="Entreprise" required />
+    <input type="text" id="position" placeholder="Poste" required />
+    <input type="url" id="offerLink" placeholder="Lien de l'offre" />
+    <input type="date" id="applicationDate" required />
+
+    <select id="status" required>
+      <option value="">Choisir un statut</option>
+      <option value="À postuler">À postuler</option>
+      <option value="Envoyée">Envoyée</option>
+      <option value="Relance">Relance</option>
+      <option value="Entretien">Entretien</option>
+      <option value="Refus">Refus</option>
+      <option value="Acceptée">Acceptée</option>
+    </select>
+
+    <textarea id="notes" placeholder="Notes"></textarea>
+
+    <button type="submit">Ajouter la candidature</button>
+  </form>
+
+  <section>
+    <input type="text" id="searchInput" placeholder="Rechercher une entreprise ou un poste..." />
+
+    <select id="statusFilter">
+      <option value="Tous">Tous les statuts</option>
+      <option value="À postuler">À postuler</option>
+      <option value="Envoyée">Envoyée</option>
+      <option value="Relance">Relance</option>
+      <option value="Entretien">Entretien</option>
+      <option value="Refus">Refus</option>
+      <option value="Acceptée">Acceptée</option>
+    </select>
+  </section>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Entreprise</th>
+        <th>Poste</th>
+        <th>Date</th>
+        <th>Statut</th>
+        <th>Notes</th>
+        <th>Offre</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="applicationsList"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
