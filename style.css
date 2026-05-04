@@ -81,14 +81,16 @@
     background: #1d4ed8;
   }
   
-  section:not(#stats) {
-    display: flex;
+  #filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
     gap: 12px;
     margin-bottom: 24px;
+    width: 100%;
   }
   
-  section:not(#stats) input {
-    flex: 1;
+  #searchInput {
+    min-width: 0;
   }
   
   table {
@@ -154,8 +156,8 @@
       grid-column: span 1;
     }
   
-    section:not(#stats) {
-      flex-direction: column;
+    #filters {
+      grid-template-columns: 1fr;
     }
   
     table {

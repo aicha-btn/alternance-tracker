@@ -43,6 +43,7 @@ searchInput.addEventListener("input", displayApplications);
 statusFilter.addEventListener("change", displayApplications);
 
 function displayApplications() {
+  updateStats();
   applicationsList.innerHTML = "";
 
   const searchText = searchInput.value.toLowerCase();
@@ -120,4 +121,7 @@ function updateStats() {
   acceptedCount.textContent = applications.filter(app => app.status === "Acceptée").length;
 }
 
-updateStats();
+window.addEventListener("storage", function () {
+  applications = JSON.parse(localStorage.getItem("applications")) || [];
+  displayApplications();
+});
