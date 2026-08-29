@@ -1,37 +1,38 @@
-# Alternance Tracker
+# Apprenticeship Tracker
 
-Application web permettant de gérer ses candidatures d’alternance.
+A web application for managing apprenticeship applications.
 
-## Testez ici !
+## Live Demo
 
-🔗 https://alternancetracker.vercel.app/
+https://alternancetracker.vercel.app/
 
-## Fonctionnalités
+## Features
 
-- Ajouter une candidature
-- Modifier une candidature
-- Supprimer une candidature
-- Filtrer par statut
-- Recherche en temps réel
-- Statistiques globales
-- Sauvegarde automatique (localStorage)
+- Add an application
+- Edit an application
+- Delete an application
+- Filter by status
+- Search in real time
+- View global statistics
+- Save data automatically with `localStorage`
 
-## Technologies utilisées
+## Technologies Used
 
 - HTML
 - CSS
 - JavaScript (Vanilla)
 
-## Objectif
+## Goal
 
-Ce projet m’a permis de pratiquer :
-- la manipulation du DOM
-- la gestion des événements
-- la persistance des données côté client
-- la création d’une interface utilisateur simple et efficace
+This project helped me practise:
 
-## Améliorations possibles
+- DOM manipulation
+- event handling
+- client-side data persistence
+- building a simple and efficient user interface
 
-- Ajout d’une base de données
-- Authentification utilisateur
-- Déploiement avec un backend
+## Possible Improvements
+
+- Add a database
+- Add user authentication
+- Deploy with a backend

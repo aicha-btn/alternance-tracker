@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alternance Tracker</title>
+  <title>Apprenticeship Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -18,41 +18,41 @@
       <div class="hero__content">
         <div class="hero__eyebrow">
           <span class="brand-mark">AT</span>
-          <span class="eyebrow">Alternance Tracker</span>
-          <span class="live-pill">Suivi en direct</span>
+          <span class="eyebrow">Apprenticeship Tracker</span>
+          <span class="live-pill">Live tracking</span>
         </div>
 
-        <h1>Le cockpit premium de tes candidatures.</h1>
+        <h1>Your premium application cockpit.</h1>
         <p>
-          Centralise toutes tes opportunités dans une interface claire, soignée et
-          vraiment pro pour piloter ton alternance comme un vrai pipeline SaaS.
+          Centralize every opportunity in a clear, polished, professional
+          interface and manage your apprenticeship search like a SaaS pipeline.
         </p>
 
         <div class="hero__chips">
-          <span class="hero-chip">Recherche instantanée</span>
-          <span class="hero-chip">Pipeline structuré</span>
-          <span class="hero-chip">Vue ultra lisible</span>
+          <span class="hero-chip">Instant search</span>
+          <span class="hero-chip">Structured pipeline</span>
+          <span class="hero-chip">Readable overview</span>
         </div>
       </div>
 
       <aside class="hero__rail">
         <div class="hero__snapshot">
-          <span class="eyebrow">Aperçu</span>
-          <strong id="todayLabel">Aujourd'hui</strong>
+          <span class="eyebrow">Snapshot</span>
+          <strong id="todayLabel">Today</strong>
           <p id="heroInsight">
-            Ajoute tes opportunités, trie-les vite, et garde une lecture immédiate de
-            ton avancée.
+            Add opportunities, sort them quickly, and keep an instant view of
+            your progress.
           </p>
         </div>
 
         <div class="hero__metrics">
           <div class="hero-metric">
-            <span>Pipeline actif</span>
+            <span>Active pipeline</span>
             <strong id="activePipelineCount">0</strong>
           </div>
 
           <div class="hero-metric">
-            <span>Taux positif</span>
+            <span>Positive rate</span>
             <strong id="positiveRate">0%</strong>
           </div>
         </div>
@@ -63,43 +63,43 @@
       <article class="stat-card stat-card--total">
         <span class="stat-card__label">Total</span>
         <strong id="totalCount">0</strong>
-        <span class="stat-card__meta">Opportunités suivies</span>
+        <span class="stat-card__meta">Tracked opportunities</span>
       </article>
 
       <article class="stat-card stat-card--todo">
-        <span class="stat-card__label">À postuler</span>
+        <span class="stat-card__label">To apply</span>
         <strong id="toApplyCount">0</strong>
-        <span class="stat-card__meta">À traiter rapidement</span>
+        <span class="stat-card__meta">Needs quick action</span>
       </article>
 
       <article class="stat-card stat-card--sent">
-        <span class="stat-card__label">Envoyées</span>
+        <span class="stat-card__label">Sent</span>
         <strong id="sentCount">0</strong>
-        <span class="stat-card__meta">Déjà candidatures lancées</span>
+        <span class="stat-card__meta">Applications launched</span>
       </article>
 
       <article class="stat-card stat-card--followup">
-        <span class="stat-card__label">Relances</span>
+        <span class="stat-card__label">Follow-ups</span>
         <strong id="followUpCount">0</strong>
-        <span class="stat-card__meta">À surveiller de près</span>
+        <span class="stat-card__meta">Watch closely</span>
       </article>
 
       <article class="stat-card stat-card--interview">
-        <span class="stat-card__label">Entretiens</span>
+        <span class="stat-card__label">Interviews</span>
         <strong id="interviewCount">0</strong>
-        <span class="stat-card__meta">Momentum positif</span>
+        <span class="stat-card__meta">Positive momentum</span>
       </article>
 
       <article class="stat-card stat-card--rejected">
-        <span class="stat-card__label">Refus</span>
+        <span class="stat-card__label">Rejected</span>
         <strong id="rejectedCount">0</strong>
-        <span class="stat-card__meta">Suivi historique</span>
+        <span class="stat-card__meta">History kept</span>
       </article>
 
       <article class="stat-card stat-card--accepted">
-        <span class="stat-card__label">Acceptées</span>
+        <span class="stat-card__label">Accepted</span>
         <strong id="acceptedCount">0</strong>
-        <span class="stat-card__meta">Objectif atteint</span>
+        <span class="stat-card__meta">Goal reached</span>
       </article>
     </section>
 
@@ -108,30 +108,30 @@
         <div class="surface__header">
           <div>
             <span class="eyebrow">Capture</span>
-            <h2 id="formHeading">Ajouter une candidature</h2>
+            <h2 id="formHeading">Add an application</h2>
           </div>
 
-          <span class="surface__badge" id="formModeBadge">Nouveau</span>
+          <span class="surface__badge" id="formModeBadge">New</span>
         </div>
 
         <p class="surface__intro" id="formIntro">
-          Renseigne chaque opportunité de façon nette pour garder un pipeline
-          impeccable et facile à piloter.
+          Capture each opportunity clearly to keep your pipeline clean and easy
+          to manage.
         </p>
 
         <form id="applicationForm">
           <label class="field">
-            <span class="field__label">Entreprise</span>
+            <span class="field__label">Company</span>
             <input type="text" id="company" placeholder="Ex. Doctolib" required />
           </label>
 
           <label class="field">
-            <span class="field__label">Poste</span>
-            <input type="text" id="position" placeholder="Ex. Développeur full-stack" required />
+            <span class="field__label">Role</span>
+            <input type="text" id="position" placeholder="Ex. Full-stack developer" required />
           </label>
 
           <label class="field">
-            <span class="field__label">Lien de l'offre</span>
+            <span class="field__label">Job post link</span>
             <input type="url" id="offerLink" placeholder="https://..." />
           </label>
 
@@ -141,15 +141,15 @@
           </label>
 
           <label class="field field--full">
-            <span class="field__label">Statut</span>
+            <span class="field__label">Status</span>
             <select id="status" required>
-              <option value="">Choisir un statut</option>
-              <option value="À postuler">À postuler</option>
-              <option value="Envoyée">Envoyée</option>
-              <option value="Relance">Relance</option>
-              <option value="Entretien">Entretien</option>
-              <option value="Refus">Refus</option>
-              <option value="Acceptée">Acceptée</option>
+              <option value="">Choose a status</option>
+              <option value="To apply">To apply</option>
+              <option value="Sent">Sent</option>
+              <option value="Follow-up">Follow-up</option>
+              <option value="Interview">Interview</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Accepted">Accepted</option>
             </select>
           </label>
 
@@ -157,13 +157,13 @@
             <span class="field__label">Notes</span>
             <textarea
               id="notes"
-              placeholder="Contexte, contact, stack, message de relance, feedback..."
+              placeholder="Context, contact, stack, follow-up message, feedback..."
             ></textarea>
           </label>
 
           <div class="form-actions field--full">
             <button type="submit" class="button button--primary" id="submitButton">
-              Ajouter la candidature
+              Add application
             </button>
 
             <button
@@ -171,7 +171,7 @@
               class="button button--ghost is-hidden"
               id="cancelEditButton"
             >
-              Annuler la modification
+              Cancel edit
             </button>
           </div>
         </form>
@@ -181,40 +181,40 @@
         <div class="surface__header surface__header--split">
           <div>
             <span class="eyebrow">Pipeline</span>
-            <h2>Candidatures suivies</h2>
+            <h2>Tracked applications</h2>
           </div>
 
           <div class="pipeline-summary">
-            <strong id="resultsSummary">0 candidature affichée</strong>
-            <span id="tableInsight">Tout est centralisé au même endroit.</span>
+            <strong id="resultsSummary">0 applications displayed</strong>
+            <span id="tableInsight">Everything is centralized in one place.</span>
           </div>
         </div>
 
         <section id="filters" class="toolbar">
           <label class="field field--search">
-            <span class="field__label">Recherche</span>
+            <span class="field__label">Search</span>
             <input
               type="text"
               id="searchInput"
-              placeholder="Entreprise, poste ou note..."
+              placeholder="Company, role, or note..."
             />
           </label>
 
           <label class="field field--compact">
-            <span class="field__label">Statut</span>
+            <span class="field__label">Status</span>
             <select id="statusFilter">
-              <option value="Tous">Tous les statuts</option>
-              <option value="À postuler">À postuler</option>
-              <option value="Envoyée">Envoyée</option>
-              <option value="Relance">Relance</option>
-              <option value="Entretien">Entretien</option>
-              <option value="Refus">Refus</option>
-              <option value="Acceptée">Acceptée</option>
+              <option value="All">All statuses</option>
+              <option value="To apply">To apply</option>
+              <option value="Sent">Sent</option>
+              <option value="Follow-up">Follow-up</option>
+              <option value="Interview">Interview</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Accepted">Accepted</option>
             </select>
           </label>
 
           <button type="button" class="button button--ghost toolbar__reset" id="resetFiltersButton">
-            Réinitialiser
+            Reset
           </button>
         </section>
 
@@ -222,12 +222,12 @@
           <table>
             <thead>
               <tr>
-                <th scope="col">Entreprise</th>
-                <th scope="col">Poste</th>
+                <th scope="col">Company</th>
+                <th scope="col">Role</th>
                 <th scope="col">Date</th>
-                <th scope="col">Statut</th>
+                <th scope="col">Status</th>
                 <th scope="col">Notes</th>
-                <th scope="col">Offre</th>
+                <th scope="col">Job post</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>

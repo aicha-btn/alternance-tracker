@@ -1,6 +1,15 @@
 const STORAGE_KEY = "applications";
-const ACTIVE_STATUSES = ["À postuler", "Envoyée", "Relance", "Entretien"];
-const POSITIVE_STATUSES = ["Entretien", "Acceptée"];
+const LEGACY_STATUS_MAP = {
+  "\u00c0 postuler": "To apply",
+  "Envoy\u00e9e": "Sent",
+  Relance: "Follow-up",
+  Entretien: "Interview",
+  Refus: "Rejected",
+  "Accept\u00e9e": "Accepted",
+  Tous: "All",
+};
+const ACTIVE_STATUSES = ["To apply", "Sent", "Follow-up", "Interview"];
+const POSITIVE_STATUSES = ["Interview", "Accepted"];
 
 const form = document.getElementById("applicationForm");
 const applicationsList = document.getElementById("applicationsList");
@@ -47,7 +56,7 @@ form.addEventListener("submit", function (event) {
     position: positionInput.value.trim(),
     offerLink: offerLinkInput.value.trim(),
     applicationDate: applicationDateInput.value,
-    status: statusInput.value,
+    status: normalizeStatus(statusInput.value),
     notes: notesInput.value.trim(),
   };
 
@@ -67,7 +76,7 @@ statusFilter.addEventListener("change", displayApplications);
 
 resetFiltersButton.addEventListener("click", function () {
   searchInput.value = "";
-  statusFilter.value = "Tous";
+  statusFilter.value = "All";
   displayApplications();
   searchInput.focus();
 });
@@ -100,7 +109,7 @@ function displayApplications() {
   applicationsList.innerHTML = "";
 
   const searchText = searchInput.value.trim().toLowerCase();
-  const selectedStatus = statusFilter.value;
+  const selectedStatus = normalizeStatus(statusFilter.value);
 
   const filteredApplications = applications
     .map(function (application, index) {
@@ -114,7 +123,7 @@ function displayApplications() {
         application.notes.toLowerCase().includes(searchText);
 
       const matchesStatus =
-        selectedStatus === "Tous" || application.status === selectedStatus;
+        selectedStatus === "All" || application.status === selectedStatus;
 
       return matchesSearch && matchesStatus;
     });
@@ -136,7 +145,7 @@ function createApplicationRow(application, index) {
   const row = document.createElement("tr");
 
   row.appendChild(createCompanyCell(application.company));
-  row.appendChild(createTextCell("Poste", application.position));
+  row.appendChild(createTextCell("Role", application.position));
   row.appendChild(createTextCell("Date", formatDate(application.applicationDate)));
   row.appendChild(createStatusCell(application.status));
   row.appendChild(createNotesCell(application.notes));
@@ -147,7 +156,7 @@ function createApplicationRow(application, index) {
 }
 
 function createCompanyCell(company) {
-  const cell = createCell("Entreprise", "company-cell");
+  const cell = createCell("Company", "company-cell");
   const title = document.createElement("strong");
 
   title.textContent = company;
@@ -164,7 +173,7 @@ function createTextCell(label, value, className) {
 }
 
 function createStatusCell(status) {
-  const cell = createCell("Statut");
+  const cell = createCell("Status");
   const badge = document.createElement("span");
 
   badge.className = "status-pill " + getStatusClass(status);
@@ -176,7 +185,7 @@ function createStatusCell(status) {
 
 function createNotesCell(notes) {
   const cell = createCell("Notes", "notes-cell");
-  cell.textContent = notes || "Aucune note ajoutée";
+  cell.textContent = notes || "No notes added";
 
   if (!notes) {
     cell.classList.add("table-muted");
@@ -186,12 +195,12 @@ function createNotesCell(notes) {
 }
 
 function createOfferCell(link) {
-  const cell = createCell("Offre");
+  const cell = createCell("Job post");
 
   if (!link) {
     const emptyLink = document.createElement("span");
     emptyLink.className = "table-muted";
-    emptyLink.textContent = "Non ajoutée";
+    emptyLink.textContent = "Not added";
     cell.appendChild(emptyLink);
     return cell;
   }
@@ -201,7 +210,7 @@ function createOfferCell(link) {
   anchor.href = link;
   anchor.target = "_blank";
   anchor.rel = "noopener noreferrer";
-  anchor.textContent = "Ouvrir";
+  anchor.textContent = "Open";
 
   cell.appendChild(anchor);
   return cell;
@@ -219,13 +228,13 @@ function createActionsCell(index) {
   editButton.className = "button button--table";
   editButton.dataset.action = "edit";
   editButton.dataset.index = index;
-  editButton.textContent = "Modifier";
+  editButton.textContent = "Edit";
 
   deleteButton.type = "button";
   deleteButton.className = "button button--table button--danger";
   deleteButton.dataset.action = "delete";
   deleteButton.dataset.index = index;
-  deleteButton.textContent = "Supprimer";
+  deleteButton.textContent = "Delete";
 
   actions.appendChild(editButton);
   actions.appendChild(deleteButton);
@@ -261,7 +270,7 @@ function editApplication(index) {
 }
 
 function deleteApplication(index) {
-  const shouldDelete = window.confirm("Supprimer cette candidature du pipeline ?");
+  const shouldDelete = window.confirm("Delete this application from the pipeline?");
 
   if (!shouldDelete) {
     return;
@@ -291,26 +300,26 @@ function resetFormState() {
 
 function setFormMode(isEditing) {
   formHeading.textContent = isEditing
-    ? "Modifier la candidature"
-    : "Ajouter une candidature";
+    ? "Edit application"
+    : "Add an application";
   formIntro.textContent = isEditing
-    ? "Ajuste les informations puis enregistre pour garder un suivi impeccable."
-    : "Renseigne chaque opportunité de façon nette pour garder un pipeline impeccable et facile à piloter.";
-  formModeBadge.textContent = isEditing ? "Édition" : "Nouveau";
+    ? "Update the details, then save to keep your tracking clean."
+    : "Capture each opportunity clearly to keep your pipeline clean and easy to manage.";
+  formModeBadge.textContent = isEditing ? "Editing" : "New";
   submitButton.textContent = isEditing
-    ? "Enregistrer les modifications"
-    : "Ajouter la candidature";
+    ? "Save changes"
+    : "Add application";
   cancelEditButton.classList.toggle("is-hidden", !isEditing);
 }
 
 function updateStats() {
   const total = applications.length;
-  const toApply = countByStatus("À postuler");
-  const sent = countByStatus("Envoyée");
-  const followUps = countByStatus("Relance");
-  const interviews = countByStatus("Entretien");
-  const rejected = countByStatus("Refus");
-  const accepted = countByStatus("Acceptée");
+  const toApply = countByStatus("To apply");
+  const sent = countByStatus("Sent");
+  const followUps = countByStatus("Follow-up");
+  const interviews = countByStatus("Interview");
+  const rejected = countByStatus("Rejected");
+  const accepted = countByStatus("Accepted");
   const activeCount = applications.filter(function (application) {
     return ACTIVE_STATUSES.includes(application.status);
   }).length;
@@ -334,45 +343,45 @@ function updateStats() {
 
 function updateDashboardCopy(filteredCount, searchText, selectedStatus) {
   const total = applications.length;
-  const hasFilters = Boolean(searchText) || selectedStatus !== "Tous";
+  const hasFilters = Boolean(searchText) || selectedStatus !== "All";
 
   if (hasFilters) {
     resultsSummary.textContent =
-      filteredCount + " sur " + total + " " + pluralize("candidature", total);
+      filteredCount + " of " + total + " " + formatUnit(total, "application");
   } else {
     resultsSummary.textContent =
-      filteredCount + " " + pluralize("candidature", filteredCount) + " affichée" + (isPlural(filteredCount) ? "s" : "");
+      filteredCount + " " + formatUnit(filteredCount, "application") + " displayed";
   }
 
   if (!total) {
-    tableInsight.textContent = "Commence par ajouter une première opportunité pour lancer ton pipeline.";
+    tableInsight.textContent = "Start by adding a first opportunity to launch your pipeline.";
     return;
   }
 
   if (!filteredCount) {
-    tableInsight.textContent = "Aucun résultat avec ces filtres. Réinitialise pour retrouver toute la vue.";
+    tableInsight.textContent = "No results match these filters. Reset them to see the full view.";
     return;
   }
 
-  if (selectedStatus !== "Tous") {
-    tableInsight.textContent = "Filtre actif : " + selectedStatus + ".";
+  if (selectedStatus !== "All") {
+    tableInsight.textContent = "Active filter: " + selectedStatus + ".";
     return;
   }
 
   if (searchText) {
-    tableInsight.textContent = "Recherche en direct sur le pipeline.";
+    tableInsight.textContent = "Live search across the pipeline.";
     return;
   }
 
-  const interviews = countByStatus("Entretien");
+  const interviews = countByStatus("Interview");
 
   if (interviews) {
     tableInsight.textContent =
-      interviews + " " + pluralize("entretien", interviews) + " en cours ou planifié" + (isPlural(interviews) ? "s" : "") + ".";
+      formatCount(interviews, "interview") + " ongoing or scheduled.";
     return;
   }
 
-  tableInsight.textContent = "Tout ton suivi est centralisé, triable et immédiatement lisible.";
+  tableInsight.textContent = "Your tracking is centralized, sortable, and instantly readable.";
 }
 
 function renderEmptyState(searchText, selectedStatus) {
@@ -393,17 +402,17 @@ function renderEmptyState(searchText, selectedStatus) {
   description.className = "empty-state__description";
 
   if (!applications.length) {
-    label.textContent = "Pipeline vide";
-    title.textContent = "Ajoute ta première candidature";
+    label.textContent = "Empty pipeline";
+    title.textContent = "Add your first application";
     description.textContent =
-      "Crée une première ligne pour commencer à suivre ton alternance dans une interface propre et claire.";
+      "Create a first row to start tracking your apprenticeship search in a clean interface.";
   } else {
-    label.textContent = "Aucun résultat";
-    title.textContent = "Aucune candidature ne correspond";
+    label.textContent = "No results";
+    title.textContent = "No application matches";
     description.textContent =
-      "Essaie d'élargir la recherche" +
-      (selectedStatus !== "Tous" ? " ou de retirer le filtre " + selectedStatus.toLowerCase() : "") +
-      (searchText ? " pour revoir plus d'opportunités." : ".");
+      "Try broadening the search" +
+      (selectedStatus !== "All" ? " or removing the " + selectedStatus.toLowerCase() + " filter" : "") +
+      (searchText ? " to see more opportunities." : ".");
   }
 
   card.appendChild(label);
@@ -442,19 +451,23 @@ function normalizeApplication(application) {
     position: application.position || "",
     offerLink: application.offerLink || "",
     applicationDate: application.applicationDate || "",
-    status: application.status || "",
+    status: normalizeStatus(application.status || ""),
     notes: application.notes || "",
   };
 }
 
+function normalizeStatus(status) {
+  return LEGACY_STATUS_MAP[status] || status;
+}
+
 function getStatusClass(status) {
   const statusClasses = {
-    "À postuler": "status-pill--todo",
-    "Envoyée": "status-pill--sent",
-    "Relance": "status-pill--followup",
-    "Entretien": "status-pill--interview",
-    "Refus": "status-pill--rejected",
-    "Acceptée": "status-pill--accepted",
+    "To apply": "status-pill--todo",
+    Sent: "status-pill--sent",
+    "Follow-up": "status-pill--followup",
+    Interview: "status-pill--interview",
+    Rejected: "status-pill--rejected",
+    Accepted: "status-pill--accepted",
   };
 
   return statusClasses[status] || "status-pill--sent";
@@ -462,7 +475,7 @@ function getStatusClass(status) {
 
 function formatDate(dateString) {
   if (!dateString) {
-    return "Non définie";
+    return "Not set";
   }
 
   const dateParts = dateString.split("-").map(Number);
@@ -473,7 +486,7 @@ function formatDate(dateString) {
 
   const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
 
-  return new Intl.DateTimeFormat("fr-FR", {
+  return new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -481,45 +494,45 @@ function formatDate(dateString) {
 }
 
 function setTodayLabel() {
-  const today = new Intl.DateTimeFormat("fr-FR", {
+  const today = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
   }).format(new Date());
 
-  todayLabel.textContent = today.charAt(0).toUpperCase() + today.slice(1);
+  todayLabel.textContent = today;
 }
 
 function buildHeroInsight(total, toApply, followUps, interviews, accepted) {
   if (!total) {
-    return "Ajoute tes opportunités, trie-les vite, et garde une lecture immédiate de ton avancée.";
+    return "Add opportunities, sort them quickly, and keep an instant view of your progress.";
   }
 
   if (accepted) {
-    return accepted + " " + pluralize("opportunité", accepted) + " acceptée" + (isPlural(accepted) ? "s" : "") + ". Le pipeline porte ses fruits.";
+    return formatCount(accepted, "accepted opportunity", "accepted opportunities") + ". The pipeline is paying off.";
   }
 
   if (interviews) {
-    return interviews + " " + pluralize("entretien", interviews) + " en cours. Tu es dans une phase qui avance bien.";
+    return formatCount(interviews, "interview") + " in progress. Things are moving well.";
   }
 
   if (followUps) {
-    return followUps + " " + pluralize("relance", followUps) + " à surveiller pour garder le bon momentum.";
+    return formatCount(followUps, "follow-up") + " to watch so you keep momentum.";
   }
 
   if (toApply) {
-    return toApply + " " + pluralize("opportunité", toApply) + " prête" + (isPlural(toApply) ? "s" : "") + " à être traitée" + (isPlural(toApply) ? "s" : "") + ".";
+    return formatCount(toApply, "opportunity", "opportunities") + " ready to process.";
   }
 
-  return "Le pipeline est propre, lisible et prêt pour tes prochaines actions.";
+  return "The pipeline is clean, readable, and ready for your next actions.";
 }
 
-function pluralize(word, count) {
-  return word + (isPlural(count) ? "s" : "");
+function formatCount(count, singular, plural) {
+  return count + " " + formatUnit(count, singular, plural);
 }
 
-function isPlural(count) {
-  return count !== 1;
+function formatUnit(count, singular, plural) {
+  return count === 1 ? singular : plural || singular + "s";
 }
 
 window.addEventListener("storage", function () {
